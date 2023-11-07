@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        body {
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            border: 1px solid black;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 1em;
+            box-sizing: border-box;
+            gap: 0.25em;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <div class="form">
+        <div class="row">
+            <input id="xm" placeholder="x" type="number" />
+            <input id="ym" placeholder="y" type="number" />
+            <input id="zm" placeholder="z" type="number" />
+        </div>
+        <div class="row">
+            <button id="move">Move</button>
+        </div>
+        <div class="row">
+            <input id="xr" placeholder="x" type="number" />
+            <input id="yr" placeholder="y" type="number" />
+            <input id="zr" placeholder="z" type="number" />
+        </div>
+        <div class="row">
+            <button id="rotate">Rotate</button>
+        </div>
+        <div class="row">
+            <input id="xs" placeholder="x" type="number" value="1" />
+            <input id="ys" placeholder="y" type="number" value="1" />
+            <input id="zs" placeholder="z" type="number" value="1" />
+        </div>
+        <div class="row">
+            <button id="scale">Scale</button>
+        </div>
+        <div class="row">
+            <button id="jump">Jump</button>
+        </div>
+        <div class="row">
+            <button id="restore">Restore</button>
+        </div>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
