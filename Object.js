@@ -1,10 +1,6 @@
 import {angleToRadians, multiplyMatrices} from "./helper.js";
 
 class Object {
-	x = 0
-	y = 0
-	z = 0
-
 	constructor(edges) {
 		this.edges = edges
 		this.initEdges = edges

@@ -1,6 +1,6 @@
 import Object from "./Object.js";
 import {clearCanvas} from "./helper.js";
-import Physic from "./Physic.js";
+import JumpingObject from "./JumpingObject.js";
 
 const axis = new Object([
 	[
@@ -17,7 +17,7 @@ const axis = new Object([
 	],
 ])
 
-const k = new Physic([
+const k = new JumpingObject([
 	[
 		{x: 0, y: 0, z: 0},
 		{x: 0, y: 100, z: 0},
@@ -185,7 +185,7 @@ document.getElementById('scale').addEventListener('click', () => {
 })
 
 document.getElementById('jump').addEventListener('click', () => {
-	k.jump(1000)
+	k.jump()
 })
 
 document.getElementById('restore').addEventListener('click', () => {
@@ -199,5 +199,5 @@ document.body.onkeyup = function(e) {
 setInterval(() => {
 	clearCanvas(ctx)
 	axis.render()
-	k.live()
+	k.render()
 }, 17)
