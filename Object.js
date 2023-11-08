@@ -28,7 +28,7 @@ class Object {
 		const proection = [
 			[1, 0, 0, 0],
 			[0, -1, 0, 0],
-			[-Math.cos(Math.PI / 4) / 2, Math.cos(Math.PI / 4) / 2, 1, 0],
+			[-Math.atan(1 / 2), Math.atan(1 / 2), 1, 0],
 			[400, 400, 0, 1],
 		]
 		return multiplyMatrices(edgeArray, proection)
