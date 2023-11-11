@@ -23,6 +23,16 @@ class Object {
 	_getEdgeProection(edgeArray) {
 		const proection = [
 			[1, 0, 0, 0],
+			[0, 1, 0, 0],
+			[0, 0, 1, -0.001],
+			[0, 0, 0, 1],
+		]
+		return multiplyMatrices(edgeArray, proection)
+	}
+
+	_getViewProection(edgeArray) {
+		const proection = [
+			[1, 0, 0, 0],
 			[0, -1, 0, 0],
 			[-Math.cos(Math.PI / 4) / 2, Math.cos(Math.PI / 4) / 2, 1, 0],
 			[400, 400, 0, 1],
@@ -30,10 +40,28 @@ class Object {
 		return multiplyMatrices(edgeArray, proection)
 	}
 
+	_calcProection(proection) {
+		return [
+			[
+				proection[0][0] / proection[0][3],
+				proection[0][1] / proection[0][3],
+				proection[0][2] / proection[0][3],
+				1
+			],
+			[
+				proection[1][0] / proection[1][3],
+				proection[1][1] / proection[1][3],
+				proection[1][2] / proection[1][3],
+				1
+			],
+		]
+	}
+
 	_getEdgeCoords(edge) {
 		const edgeArray = this._edgeToArray(edge)
 		const proection = this._getEdgeProection(edgeArray)
-		return this._arrayToEdge(proection)
+		const viewProection = this._getViewProection(this._calcProection(proection))
+		return this._arrayToEdge(viewProection)
 	}
 
 	_renderEdge(edge) {
