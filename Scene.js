@@ -10,6 +10,7 @@ import {
 
 export default class Scene {
 	#objects = []
+	#colors = []
 
 	constructor(canvas) {
 		this.width = canvas.width
@@ -54,7 +55,7 @@ export default class Scene {
 		])
 	}
 
-	_getEdgeWithProperties(edge) {
+	_getEdgeWithProperties(edge, index) {
 		const minX = edge.reduce(((acc, point) => point.x < acc ? point.x : acc), edge[0].x)
 		const maxX = edge.reduce(((acc, point) => point.x > acc ? point.x : acc), edge[0].x)
 		const minY = edge.reduce(((acc, point) => point.y < acc ? point.y : acc), edge[0].y)
@@ -64,15 +65,16 @@ export default class Scene {
 			minX,
 			maxX,
 			minY,
-			maxY
+			maxY,
+			color: this.#colors[index]
 		}
 	}
 
-	_getEdgeCoords(edge) {
+	_getEdgeCoords(edge, i) {
 		const edgeArray = this._edgeToArray(edge)
 		const proection = this._getEdgeProection(edgeArray)
 		const viewProection = this._getViewProection(this._calcProection(proection))
-		return this._getEdgeWithProperties(this._arrayToEdge(viewProection))
+		return this._getEdgeWithProperties(this._arrayToEdge(viewProection), i)
 	}
 
 	_renderEdge(transformedEdge) {
@@ -127,7 +129,7 @@ export default class Scene {
 			angle += getVector2DAngle(a, b)
 		})
 
-		return equalWithPrecision(Math.abs(angle), 360, 1);
+		return equalWithPrecision(Math.abs(angle), 360, 2);
 
 	}
 
@@ -139,14 +141,14 @@ export default class Scene {
 			return
 		}
 
+		const sortedEdges = filteredEdges.sort((edge1, edge2) => {
+			const z1 = this._getPointEdgeZ(edge1, x, y)
+			const z2 = this._getPointEdgeZ(edge2, x, y)
+
+			return z2 - z1
+		})
+
 		if (w === 1) {
-			const sortedEdges = filteredEdges.sort((edge1, edge2) => {
-				const z1 = this._getPointEdgeZ(edge1, x, y)
-				const z2 = this._getPointEdgeZ(edge2, x, y)
-
-				return z2 - z1
-			})
-
 			for (let j = 0; j < sortedEdges.length; j++) {
 				const topEdge = sortedEdges[j].points
 				for (let i = 0; i < topEdge.length; i++) {
@@ -164,27 +166,27 @@ export default class Scene {
 					const maxX = Math.max(firstPoint.x, lastPoint.x)
 
 					if (this._checkInsideEdge(sortedEdges[j], x, y, w)) {
+						this.ctx.fillStyle = sortedEdges[j].color
+						this.ctx.fillRect(x, y, w, w)
 						return
 					}
 
 					if (deltaX === 0 && equalWithPrecision(x, firstPoint.x, 0.5) && minY < y && y < maxY) {
-						this.ctx.fillStyle = "black"
+						this.ctx.fillStyle = sortedEdges[j].color
 						this.ctx.fillRect(x, y, 1, 1)
 						return;
 					}
 
 					if (deltaY === 0 && equalWithPrecision(y, firstPoint.y, 0.5)  && minX < x && x < maxX) {
-						this.ctx.fillStyle = "black"
+						this.ctx.fillStyle = sortedEdges[j].color
 						this.ctx.fillRect(x, y, 1, 1)
 						return;
 					}
 
-
-
 					if (!(minY <= y && y <= maxY && minX <= x && x <= maxX)) continue
 
 					if (Math.abs(y - m * x - b) <= Math.abs(m)) {
-						this.ctx.fillStyle = "black"
+						this.ctx.fillStyle = sortedEdges[j].color
 						this.ctx.fillRect(x, y, 1, 1)
 						return;
 					}
@@ -204,6 +206,10 @@ export default class Scene {
 		this.#objects.push(object)
 	}
 
+	addColor(color) {
+		this.#colors.push(color)
+	}
+
 	clear() {
 		this.ctx.fillStyle = "white"
 		this.ctx.fillRect(0, 0, this.width, this.height)
@@ -215,7 +221,7 @@ export default class Scene {
 
 	render() {
 		const edges = []
-		this.#objects.forEach((obj) => obj.edges.forEach((edge) => edges.push(this._getEdgeCoords(edge))))
+		this.#objects.forEach((obj) => obj.edges.forEach((edge, i) => edges.push(this._getEdgeCoords(edge, i))))
 		this._WarnockAlgo(edges, 0, 0, this.width)
 	}
 }

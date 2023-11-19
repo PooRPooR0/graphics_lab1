@@ -20,7 +20,7 @@ const k = new Object([
 	[
 		{x: -10, y: 0, z: 0},
 		{x: -30, y: 30, z: 0},
-		{x: 0, y: 50, z: 0},
+		{x: -20, y: 60, z: 0},
 		{x: 20, y: 70, z: 0},
 		{x: 30, y: 30, z: 0},
 		{x: 10, y: 0, z: 0},
@@ -28,10 +28,16 @@ const k = new Object([
 	[
 		{x: -10, y: 0, z: 40},
 		{x: -30, y: 30, z: 40},
-		{x: 0, y: 50, z: 40},
+		{x: -20, y: 60, z: 40},
 		{x: 20, y: 70, z: 40},
 		{x: 30, y: 30, z: 40},
 		{x: 10, y: 0, z: 40},
+	],
+	[
+		{x: 0, y: 20, z: 100},
+		{x: 0, y: 60, z: 100},
+		{x: 0, y: 50, z: -100},
+		{x: 0, y: 20, z: -100},
 	],
 ])
 
@@ -71,8 +77,13 @@ const canvas = document.getElementById('canvas')
 
 const scene = new Scene(canvas);
 
-// scene.addObject(axis)
 scene.addObject(k)
+
+scene.addColor('#237675')
+scene.addColor('#142cc2')
+scene.addColor('#c422c3')
+
+scene.rotate(0, 20, 0)
 
 scene.render()
 
