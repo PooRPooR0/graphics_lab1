@@ -1,6 +1,5 @@
 import Object from "./Object.js";
-import {clearCanvas} from "./helper.js";
-import JumpingObject from "./JumpingObject.js";
+import Scene from "./Scene.js";
 
 const axis = new Object([
 	[
@@ -17,54 +16,22 @@ const axis = new Object([
 	],
 ])
 
-const k = new JumpingObject([
+const k = new Object([
 	[
-		{x: 0, y: 0, z: 0},
-		{x: 40, y: 0, z: 0},
+		{x: -10, y: 0, z: 0},
+		{x: -30, y: 30, z: 0},
+		{x: 0, y: 50, z: 0},
+		{x: 20, y: 70, z: 0},
+		{x: 30, y: 30, z: 0},
+		{x: 10, y: 0, z: 0},
 	],
 	[
-		{x: 40, y: 0, z: 0},
-		{x: 40, y: 40, z: 0},
-	],
-	[
-		{x: 40, y: 40, z: 0},
-		{x: 0, y: 40, z: 0},
-	],
-	[
-		{x: 0, y: 40, z: 0},
-		{x: 0, y: 0, z: 0},
-	],
-	[
-		{x: 0, y: 0, z: 40},
-		{x: 40, y: 0, z: 40},
-	],
-	[
-		{x: 40, y: 0, z: 40},
-		{x: 40, y: 40, z: 40},
-	],
-	[
-		{x: 40, y: 40, z: 40},
-		{x: 0, y: 40, z: 40},
-	],
-	[
-		{x: 0, y: 40, z: 40},
-		{x: 0, y: 0, z: 40},
-	],
-	[
-		{x: 0, y: 0, z: 0},
-		{x: 0, y: 0, z: 40},
-	],
-	[
-		{x: 40, y: 40, z: 0},
-		{x: 40, y: 40, z: 40},
-	],
-	[
-		{x: 0, y: 40, z: 0},
-		{x: 0, y: 40, z: 40},
-	],
-	[
-		{x: 40, y: 0, z: 0},
-		{x: 40, y: 0, z: 40},
+		{x: -10, y: 0, z: 40},
+		{x: -30, y: 30, z: 40},
+		{x: 0, y: 50, z: 40},
+		{x: 20, y: 70, z: 40},
+		{x: 30, y: 30, z: 40},
+		{x: 10, y: 0, z: 40},
 	],
 ])
 
@@ -92,10 +59,6 @@ document.getElementById('scale').addEventListener('click', () => {
 	k.scale(x, y, z);
 })
 
-document.getElementById('jump').addEventListener('click', () => {
-	k.jump()
-})
-
 document.getElementById('restore').addEventListener('click', () => {
 	k.restore()
 })
@@ -105,14 +68,18 @@ document.body.onkeyup = function(e) {
 }
 
 const canvas = document.getElementById('canvas')
-const ctx = canvas.getContext('2d')
 
-axis.render()
-k.render()
+const scene = new Scene(canvas);
+
+// scene.addObject(axis)
+scene.addObject(k)
+
+scene.render()
 
 setInterval(() => {
-	clearCanvas(ctx)
-	axis.render()
-	k.rotate(0, 1, 0)
-	k.render()
+	scene.clear()
+
+	scene.rotate(0, 1, 0)
+
+	scene.render()
 }, 17)

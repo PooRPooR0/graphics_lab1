@@ -7,73 +7,11 @@ class Object {
 	}
 
 	_edgeToArray(edge) {
-		return [
-			[edge[0].x, edge[0].y, edge[0].z, 1],
-			[edge[1].x, edge[1].y, edge[1].z, 1]
-		]
+		return edge.map((point) => [point.x, point.y, point.z, 1])
 	}
 
 	_arrayToEdge(array) {
-		return [
-			{x: array[0][0], y: array[0][1], z: array[0][2]},
-			{x: array[1][0], y: array[1][1], z: array[1][2]}
-		]
-	}
-
-	_getEdgeProection(edgeArray) {
-		const proection = [
-			[1, 0, 0, 0],
-			[0, 1, 0, 0],
-			[0, 0, 1, -0.001],
-			[0, 0, 0, 1],
-		]
-		return multiplyMatrices(edgeArray, proection)
-	}
-
-	_getViewProection(edgeArray) {
-		const proection = [
-			[1, 0, 0, 0],
-			[0, -1, 0, 0],
-			[-Math.cos(Math.PI / 4) / 2, Math.cos(Math.PI / 4) / 2, 1, 0],
-			[400, 400, 0, 1],
-		]
-		return multiplyMatrices(edgeArray, proection)
-	}
-
-	_calcProection(proection) {
-		return [
-			[
-				proection[0][0] / proection[0][3],
-				proection[0][1] / proection[0][3],
-				proection[0][2] / proection[0][3],
-				1
-			],
-			[
-				proection[1][0] / proection[1][3],
-				proection[1][1] / proection[1][3],
-				proection[1][2] / proection[1][3],
-				1
-			],
-		]
-	}
-
-	_getEdgeCoords(edge) {
-		const edgeArray = this._edgeToArray(edge)
-		const proection = this._getEdgeProection(edgeArray)
-		const viewProection = this._getViewProection(this._calcProection(proection))
-		return this._arrayToEdge(viewProection)
-	}
-
-	_renderEdge(edge) {
-		const canvas = document.getElementById('canvas')
-		const ctx = canvas.getContext('2d')
-
-		const transformedEdge = this._getEdgeCoords(edge)
-		ctx.beginPath();
-		ctx.moveTo(transformedEdge[0].x, transformedEdge[0].y)
-		ctx.lineTo(transformedEdge[1].x, transformedEdge[1].y);
-		ctx.closePath();
-		ctx.stroke();
+		return array.map((point) => ({x: point[0], y: point[1], z: point[2]}))
 	}
 
 	_transformEdges(matrix) {
@@ -150,10 +88,6 @@ class Object {
 		this.x = 0
 		this.y = 0
 		this.z = 0
-	}
-
-	render() {
-		this.edges.forEach((edge) => this._renderEdge(edge))
 	}
 }
 

@@ -15,6 +15,8 @@
 
         canvas {
             border: 1px solid black;
+            display: block;
+            box-sizing: border-box;
         }
 
         .form {
@@ -28,7 +30,9 @@
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="800" height="800"></canvas>
+    <div>
+        <canvas id="canvas" width="800" height="800"></canvas>
+    </div>
     <div class="form">
         <div class="row">
             <input id="xm" placeholder="x" type="number" />
@@ -53,9 +57,6 @@
         </div>
         <div class="row">
             <button id="scale">Scale</button>
-        </div>
-        <div class="row">
-            <button id="jump">Jump</button>
         </div>
         <div class="row">
             <button id="restore">Restore</button>
