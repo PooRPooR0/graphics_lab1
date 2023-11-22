@@ -5,17 +5,19 @@ import {
 	getVector2DAngle,
 	middleVectors,
 	multiplyMatrices,
-	vectorMultiply
+	vectorMultiply,
+	sleep
 } from "./helper.js";
 
 export default class Scene {
 	#objects = []
 	#colors = []
 
-	constructor(canvas) {
+	constructor(canvas, debugCanvas) {
 		this.width = canvas.width
 		this.height = canvas.height
 		this.ctx = canvas.getContext('2d')
+		this.debugCtx = debugCanvas.getContext('2d')
 	}
 
 	_edgeToArray(edge) {
@@ -133,7 +135,18 @@ export default class Scene {
 
 	}
 
-	_WarnockAlgo(edges, x = 0, y = 0, w = 800) {
+	renderDebug(x, y, w) {
+		this.debugCtx.strokeStyle = '#ff0000'
+		this.debugCtx.strokeRect(x, y, w, w)
+	}
+
+	clearDebug() {
+		this.debugCtx.clearRect(0, 0, this.width, this.height);
+	}
+
+	async _WarnockAlgo(edges, x = 0, y = 0, w = 800) {
+		this.clearDebug()
+		this.renderDebug(x, y, w)
 		const filteredEdges = edges.filter((edge) => !this._isEdgeOutside(edge, x, y, w))
 		if (!filteredEdges.length) {
 			this.ctx.fillStyle = "white"
@@ -195,10 +208,12 @@ export default class Scene {
 		} else {
 			const nextSize = Math.round(w / 2)
 
-			this._WarnockAlgo(filteredEdges, x, y, nextSize)
-			this._WarnockAlgo(filteredEdges, x + nextSize, y, nextSize)
-			this._WarnockAlgo(filteredEdges, x, y + nextSize, nextSize)
-			this._WarnockAlgo(filteredEdges, x + nextSize, y + nextSize, nextSize)
+			await sleep(10)
+
+			await this._WarnockAlgo(filteredEdges, x, y, nextSize)
+			await this._WarnockAlgo(filteredEdges, x + nextSize, y, nextSize)
+			await this._WarnockAlgo(filteredEdges, x, y + nextSize, nextSize)
+			await this._WarnockAlgo(filteredEdges, x + nextSize, y + nextSize, nextSize)
 		}
 	}
 
@@ -219,9 +234,10 @@ export default class Scene {
 		this.#objects.forEach(obj => obj.rotate(x, y, z))
 	}
 
-	render() {
+	async render() {
 		const edges = []
 		this.#objects.forEach((obj) => obj.edges.forEach((edge, i) => edges.push(this._getEdgeCoords(edge, i))))
-		this._WarnockAlgo(edges, 0, 0, this.width)
+		await this._WarnockAlgo(edges, 0, 0, this.width)
+		this.clearDebug()
 	}
 }

@@ -63,3 +63,7 @@ export function scalarMultyply(a, b) {
 export function getVector2DAngle(a, b) {
 	return radiansToAngle(Math.acos(scalarMultyply(a, b) / (getVector2DLength(a) * getVector2DLength(b))))
 }
+
+export async function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}

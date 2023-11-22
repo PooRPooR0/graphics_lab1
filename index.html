@@ -27,40 +27,22 @@
             box-sizing: border-box;
             gap: 0.25em;
         }
+
+        .canvas-wrapper {
+            position: relative;
+        }
+
+        .canvas_debug {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 <body>
-    <div>
+    <div class="canvas-wrapper">
         <canvas id="canvas" width="800" height="800"></canvas>
-    </div>
-    <div class="form">
-        <div class="row">
-            <input id="xm" placeholder="x" type="number" />
-            <input id="ym" placeholder="y" type="number" />
-            <input id="zm" placeholder="z" type="number" />
-        </div>
-        <div class="row">
-            <button id="move">Move</button>
-        </div>
-        <div class="row">
-            <input id="xr" placeholder="x" type="number" />
-            <input id="yr" placeholder="y" type="number" />
-            <input id="zr" placeholder="z" type="number" />
-        </div>
-        <div class="row">
-            <button id="rotate">Rotate</button>
-        </div>
-        <div class="row">
-            <input id="xs" placeholder="x" type="number" value="1" />
-            <input id="ys" placeholder="y" type="number" value="1" />
-            <input id="zs" placeholder="z" type="number" value="1" />
-        </div>
-        <div class="row">
-            <button id="scale">Scale</button>
-        </div>
-        <div class="row">
-            <button id="restore">Restore</button>
-        </div>
+        <canvas id="debugCanvas" width="800" height="800" class="canvas_debug"></canvas>
     </div>
     <script type="module" src="script.js"></script>
 </body>
